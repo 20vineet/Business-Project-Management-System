@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import Navbar from "../Layout/Navbar";
+import Footer from "../Layout/Footer";
 import { BriefcaseIcon, PlusCircleIcon, CalendarIcon, UploadIcon } from '@heroicons/react/outline'; // Assuming you're using Heroicons v1
 import { motion } from 'framer-motion';
 
@@ -72,7 +72,7 @@ function Home() {
             transition={{ duration: 0.5, delay: 0.6 }}
           >
             <Link
-              to="/import-project"
+              to="/upload-project"
               className="bg-gray-800 hover:bg-gray-900 text-white font-medium py-4 px-8 w-full max-w-md text-center text-lg rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105"
             >
               <UploadIcon className="w-6 h-6 mb-2 mx-auto" />

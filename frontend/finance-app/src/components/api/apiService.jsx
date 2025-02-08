@@ -1,10 +1,14 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = "http://localhost:8080/";
 
 // Fetch all projects
 export const fetchProjects = async () => {
-  const response = await axios.get(`${API_URL}/projects`);
+  // const response = await axios.get(`${API_URL}/projects`);
+  // return response.data;
+  const response = async () => {
+    return axiosInstance.get("/api/projects");
+  };
   return response.data;
 };
 

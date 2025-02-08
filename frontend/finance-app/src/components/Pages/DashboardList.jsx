@@ -1,25 +1,38 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { fetchProjects } from "../apiService"; // Importing from the new service
-import Navbar from "./Navbar"; // Import Navbar
+import {useState, useEffect} from "react";
+import {Link} from "react-router-dom";
+import axios from "axios";
+import {fetchProjects} from "../api/apiService"; // Importing from the new service
+// import Navbar from "../Layout/Navbar"; // Import Navbar
 
 function DashboardList() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     // Fetch projects from your API
-    fetchProjects().then((data) => {
-      console.log(data);
-      setProjects(data);
-    });
+    // fetchProjects().then((data) => {
+    //   console.log(data);
+    //   setProjects(data);
+    // });
+    // Fetch projects from your API
+    const token = localStorage.getItem("token");
+    // console.log(token);
+    const getProjects = async () => {
+      try {
+        // const data = await fetchProjects(); // Fetch projects using apiService
+        const response = await axios.get("http://localhost:8080/api/projects", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response.data);
+        setProjects(response.data);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
 
-
-    // For demo purposes, you can mock data like this:
-    // setProjects([
-    //   {id: 1, name: "Project A", status: "In Progress"},
-    //   {id: 2, name: "Project B", status: "Completed"},
-    //   {id: 3, name: "Project C", status: "Planning"},
-    // ]);
+    getProjects(); // Call the async function to fetch projects
   }, []);
 
   if (!projects.length) {
@@ -28,16 +41,15 @@ function DashboardList() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container mx-auto px-6 py-12">
-        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-12">
+        {/* <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-12">
           Projects
-        </h1>
-
+        </h1> */}
 
         <div className="flex flex-wrap justify-center gap-8">
           <div className="w-full md:w-3/4 lg:w-full px-4">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-6">Projects</h2>
+            {/* <h2 className="text-2xl font-semibold text-gray-700 mb-6">Projects</h2> */}
 
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
               <table className="min-w-full table-auto text-sm text-gray-600">

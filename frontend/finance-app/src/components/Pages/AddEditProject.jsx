@@ -1,19 +1,16 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  fetchProjectById,
-  addProject,
-  updateProject,
-} from "../apiService"; // Importing from the new service
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import {useState, useEffect} from "react";
+import {useParams, useNavigate} from "react-router-dom";
+import {fetchProjectById, addProject, updateProject} from "../api/apiService"; // Importing from the new service
+import Navbar from "../Layout/Navbar";
+import Footer from "../Layout/Footer";
+import axios from "axios";
 
 function AddEditProject() {
   const [formData, setFormData] = useState({
     events: [],
   });
   const [currentEvent, setCurrentEvent] = useState([]);
-  const { id } = useParams();
+  const {id} = useParams();
   const navigate = useNavigate();
   const isEditing = !!id;
 
@@ -27,23 +24,46 @@ function AddEditProject() {
   }, [id, isEditing]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({...formData, [e.target.name]: e.target.value});
+    console.log(`Updated FormData: ${e.target.name} = ${e.target.value}`);
   };
 
   const handleEventChange = (e) => {
-    setCurrentEvent({ ...currentEvent, [e.target.name]: e.target.value });
+    setCurrentEvent({...currentEvent, [e.target.name]: e.target.value});
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    formData.id = "P" + Date.now();
+
+    formData.startDate = generateDateTimeWithDefaultTime(formData.startDate);
+
+    formData.endDate = generateDateTimeWithDefaultTime(formData.endDate);
     if (isEditing) {
-      updateProject(id, formData).then(() => {
-        navigate("/dashboard");
-      });
+      // updateProject(id, formData).then(() => {
+      //   navigate("/dashboard");
+      // });
     } else {
-      addProject(formData).then(() => {
-        navigate("/dashboard");
-      });
+      const token = localStorage.getItem("token");
+
+      axios
+        .post(
+          "http://localhost:8080/api/projects",
+          formData, // Correctly placing formData as the second argument
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(function (response) {
+          console.log(response);
+          navigate("/dashboard");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
 
@@ -89,9 +109,15 @@ function AddEditProject() {
         <h1 className="text-3xl font-bold mb-8">
           {isEditing ? "Edit Project" : "Add New Project"}
         </h1>
-        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-md rounded-lg p-6"
+        >
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="name"
+            >
               Project Title
             </label>
             <input
@@ -105,7 +131,10 @@ function AddEditProject() {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="description"
+            >
               Description
             </label>
             <textarea
@@ -120,7 +149,10 @@ function AddEditProject() {
           </div>
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startDate">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="startDate"
+              >
                 Project Startdate : {formData.startDate}
               </label>
               <input
@@ -134,7 +166,10 @@ function AddEditProject() {
               />
             </div>
             <div className="w-1/2">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endDate">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="endDate"
+              >
                 Project Enddate : {formData.endDate}
               </label>
               <input
@@ -149,17 +184,41 @@ function AddEditProject() {
             </div>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="name"
+            >
+              Client Contact Email
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="contactEmail"
+              type="email"
+              name="contactEmail"
+              value={formData.contactEmail}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="status"
+            >
               Status
             </label>
             <select
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="status"
               name="status"
-              value={formData.status}
+              value={formData.status || ""}
               onChange={handleChange}
+              placeholder="Select status"
               required
             >
+              <option value="" disabled hidden>
+                Select Status
+              </option>
               <option value="Planning">Planning</option>
               <option value="In_Progress">In Progress</option>
               <option value="Completed">Completed</option>
