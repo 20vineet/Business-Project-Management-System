@@ -33,10 +33,10 @@ function Dashboard() {
   }, []); // Empty dependency array to run once when the component mounts
 
   return (
-    // Added uniform background and full height for consistent layout
-    <div className="bg-gray-100 min-h-screen flex flex-col">
+    // Added full-width styles to remove the white margin issue
+    <div className="bg-gray-100 min-h-screen flex flex-col w-full overflow-x-hidden">
       {/* <Navbar />  */}
-      <div className="container mx-auto px-6 py-12 flex-grow">
+      <div className="container mx-auto px-6 py-12 flex-grow w-full">
         {/* <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-12">
           Projects
         </h1> */}

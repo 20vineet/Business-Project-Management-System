@@ -49,7 +49,7 @@ function EventsPage() {
 
   return (
     // Added uniform background and minimum height for full-screen layout
-    <div className="bg-gray-100 min-h-screen flex flex-col">
+    <div className="bg-gray-100 min-h-screen flex flex-col w-full overflow-x-hidden">
       <Navbar />
       <div className="container mx-auto px-4 py-8 max-w-4xl flex-grow">
         <h1 className="text-3xl font-bold mb-8 text-center">Upcoming Events</h1>

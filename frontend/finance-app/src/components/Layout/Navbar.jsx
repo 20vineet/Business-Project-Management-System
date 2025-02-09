@@ -19,7 +19,7 @@ import {grey} from "@mui/material/colors";
 // Define pages with correct route mappings
 const pages = [
   {name: "Home", path: "/home"},
-  {name: "Projects", path: "/dashBoard"},
+  {name: "Projects", path: "/dashboard"},
   {name: "Events", path: "/events"},
   {name: "Upload", path: "/upload-project"},
 ];
@@ -44,8 +44,9 @@ function Navbar() {
       navigate("/account"); // Navigate to the account page
     }
     if (setting === "Logout") {
-      localStorage.setItem("token", "");
-      localStorage.setItem("username", "");
+      // localStorage.setItem("token", "");
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
 
       navigate("/login"); // Navigate to the account page
     }

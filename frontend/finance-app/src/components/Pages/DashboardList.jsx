@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 import {fetchProjects} from "../api/apiService"; // Importing from the new service
 // import Navbar from "../Layout/Navbar"; // Import Navbar
 
@@ -8,11 +9,6 @@ function DashboardList() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    // Fetch projects from your API
-    // fetchProjects().then((data) => {
-    //   console.log(data);
-    //   setProjects(data);
-    // });
     // Fetch projects from your API
     const token = localStorage.getItem("token");
     // console.log(token);
@@ -34,6 +30,49 @@ function DashboardList() {
 
     getProjects(); // Call the async function to fetch projects
   }, []);
+
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  // Function to check if token is expired
+  const isTokenExpired = () => {
+    const token = localStorage.getItem("token");
+    const tokenTimestamp = localStorage.getItem("tokenTimestamp");
+
+    if (!token || !tokenTimestamp) {
+      return true; // If token or timestamp is missing, consider it expired
+    }
+
+    const expirationTime = 60 * 60 * 1000; // 1 hour in milliseconds
+    const currentTime = new Date().getTime();
+
+    return currentTime - parseInt(tokenTimestamp, 10) > expirationTime;
+  };
+
+  useEffect(() => {
+    if (isTokenExpired()) {
+      localStorage.removeItem("token"); // Clear expired token
+      localStorage.removeItem("tokenTimestamp"); // Clear timestamp
+      navigate("/login"); // Redirect to login page
+    }
+
+    // Set interval to check token expiration every minute
+    const interval = setInterval(() => {
+      if (isTokenExpired()) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("tokenTimestamp");
+        navigate("/login");
+      }
+    }, 60000); // Check every 1 minute
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, [navigate]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    if (!token) {
+      navigate("/login"); // Redirect to login page if token is missing
+    }
+  }, [navigate]); // Runs only on component mount
 
   if (!projects.length) {
     return <div className="text-center text-lg">No projects available.</div>;

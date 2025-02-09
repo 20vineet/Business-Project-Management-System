@@ -23,7 +23,7 @@ function UploadProject() {
             We're currently working on this feature. Please check back later.
           </p>
           <Link
-            to="/"
+            to="/home"
             className="bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105"
           >
             Back to Home
