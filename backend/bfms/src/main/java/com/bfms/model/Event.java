@@ -9,7 +9,7 @@ import java.util.List;
 public class Event {
     @Id
     private String id;
-    private String projectId;
+    private String projectTitle;
     private String title;
     private String description;
     private LocalDateTime eventDate;
@@ -23,11 +23,11 @@ public class Event {
 		super();
 	}
 
-	public Event(String id, String projectId, String title, String description, LocalDateTime eventDate,
+	public Event(String id, String projectTitle, String title, String description, LocalDateTime eventDate,
 			NotificationPreference notificationPreference) {
 		super();
 		this.id = id;
-		this.projectId = projectId;
+		this.projectTitle = projectTitle;
 		this.title = title;
 		this.description = description;
 		this.eventDate = eventDate;
@@ -42,12 +42,12 @@ public class Event {
 		this.id = id;
 	}
 
-	public String getProjectId() {
-		return projectId;
+	public String getProjectTitle() {
+		return projectTitle;
 	}
 
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
+	public void setProjectTitle(String projectTitle) {
+		this.projectTitle = projectTitle;
 	}
 
 	public String getTitle() {

@@ -23,7 +23,6 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/projects")
 public class ProjectController {
     @Autowired

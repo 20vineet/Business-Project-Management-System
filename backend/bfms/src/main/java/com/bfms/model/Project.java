@@ -18,6 +18,7 @@ public class Project {
 	private LocalDateTime endDate;
 	private List<Event> events;
 	private ProjectStatus status;
+	private String contactEmail;
 
 //	public enum ProjectStatus {
 //		PLANNING, IN_PROGRESS, COMPLETED, ON_HOLD
@@ -38,7 +39,7 @@ public class Project {
 	}
 
 	public Project(String id, String title, String description, LocalDateTime startDate, LocalDateTime endDate,
-			List<Event> events, ProjectStatus status) {
+			List<Event> events, ProjectStatus status, String contactEmail) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -47,6 +48,7 @@ public class Project {
 		this.endDate = endDate;
 		this.events = events;
 		this.status = status;
+		this.contactEmail = contactEmail;
 	}
 
 	public String getId() {
@@ -105,4 +107,13 @@ public class Project {
 		this.status = status;
 	}
 
+	public String getContactEmail() {
+		return contactEmail;
+	}
+
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
+	}
+
+	
 }

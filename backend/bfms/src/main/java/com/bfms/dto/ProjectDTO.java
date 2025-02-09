@@ -114,5 +114,8 @@ public class ProjectDTO {
 
     private List<EventDTO> events;
     private Project.ProjectStatus status;
+    
+    @NotBlank(message = "Contact email is required")
+    private String contactEmail;
 
 }

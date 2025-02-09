@@ -33,6 +33,7 @@ import java.util.Optional;
 //}
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/events")
 public class EventController {
     @Autowired

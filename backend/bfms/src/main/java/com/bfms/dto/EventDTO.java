@@ -89,7 +89,7 @@ public class EventDTO {
 	
 	@NotBlank(message = "Id is required")
 	private String id;
-    private String projectId;
+    private String projectTitle;
 
     @NotBlank(message = "Event title is required")
     @Size(min = 3, max = 100, message = "Event title must be between 3 and 100 characters")

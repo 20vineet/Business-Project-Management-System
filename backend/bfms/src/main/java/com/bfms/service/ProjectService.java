@@ -11,6 +11,7 @@ import com.bfms.repository.EventRepository;
 import com.bfms.repository.ProjectRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,19 +24,18 @@ public class ProjectService {
     private EventRepository eventRepository;
 
     public Project addNewProject(Project project) {
-//      project.setStatus(Project.ProjectStatus.PLANNING);
-//  	project.setStatus(Project.ProjectStatus.valueOf(project.getStatus().toString()));
-        System.out.println("Received status: " + project.getStatus());
-
-        if (project.getStatus() == null) {
-            project.setStatus(ProjectStatus.PLANNING);  // Set to default if null
-        } else {
-            project.setStatus(ProjectStatus.fromString(project.getStatus().name()));  // Safely convert status to enum
+//        project.setStatus(Project.ProjectStatus.PLANNING);
+//    	project.setStatus(Project.ProjectStatus.valueOf(project.getStatus().toString()));
+        project.setStatus(ProjectStatus.fromString(project.getStatus().name()));
+        
+        if (project.getEvents() != null) {
+            for (Event event : project.getEvents()) {
+                event.setProjectTitle(project.getTitle());
+            }
         }
-
+        
         return projectRepository.save(project);
     }
-
 
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
@@ -46,6 +46,7 @@ public class ProjectService {
     }
     public List<Project> getProjectByStatus(String status) {
         return projectRepository.findByStatus(Project.ProjectStatus.valueOf(status));
+//        return projectRepository.findByStatus(status);
     }
 
     public Project updateProject(String projectId, Project updatedProject) {
@@ -56,6 +57,7 @@ public class ProjectService {
                 existingProject.setStartDate(updatedProject.getStartDate());
                 existingProject.setEndDate(updatedProject.getEndDate());
                 existingProject.setStatus(updatedProject.getStatus());
+                existingProject.setContactEmail(updatedProject.getContactEmail());
                 return projectRepository.save(existingProject);
             })
             .orElseThrow(() -> new RuntimeException("Project not found"));
@@ -72,6 +74,7 @@ public class ProjectService {
         return projects.stream()
                 .flatMap(project -> project.getEvents().stream()
                         .filter(event -> event.getEventDate().isAfter(now)))
+                .sorted(Comparator.comparing(Event::getEventDate))
                 .collect(Collectors.toList());
     }
 }

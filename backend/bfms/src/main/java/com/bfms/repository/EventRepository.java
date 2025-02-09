@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends MongoRepository<Event, String> {
-    List<Event> findByProjectId(String projectId);
+//    List<Event> findByProjectId(String projectId);
     List<Event> findByEventDateBetween(LocalDateTime start, LocalDateTime end);
     
     @Query("{'eventDate': {$lte: ?0}, 'notificationPreference': ?1}")
