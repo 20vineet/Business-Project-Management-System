@@ -1,5 +1,7 @@
 package com.bfms.controller;
 
+import java.util.Collections;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,22 +54,45 @@ public class AuthController {
 	        return service.addUser(userInfo);
 	    }
 
-	@PostMapping("/authenticate")
-	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-		System.out.println("Username : " + authRequest.getUsername());
-		System.out.println("Password : " + authRequest.getPassword());
-		
-		try {
-			Authentication authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-			if (authentication.isAuthenticated()) {
-				return jwtService.generateToken(authRequest.getUsername());
-			} else {
-				throw new UsernameNotFoundException("invalid user request !");
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new UsernameNotFoundException("invalid user request !");
-		}
-	}
+//	@PostMapping("/authenticate")
+//	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+//		System.out.println("Username : " + authRequest.getUsername());
+//		System.out.println("Password : " + authRequest.getPassword());
+//		
+//		try {
+//			Authentication authentication = authenticationManager.authenticate(
+//					new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+//			if (authentication.isAuthenticated()) {
+//				return jwtService.generateToken(authRequest.getUsername());
+//			} else {
+//				throw new UsernameNotFoundException("invalid user request !");
+//			}
+//		}catch(Exception e) {
+////			e.printStackTrace();
+//			throw new UsernameNotFoundException("invalid user request !");
+//		}
+//	}
+	 
+	 @PostMapping("/authenticate")
+	 public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+	     System.out.println("Username : " + authRequest.getUsername());
+	     System.out.println("Password : " + authRequest.getPassword());
+
+	     try {
+	         Authentication authentication = authenticationManager.authenticate(
+	                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+	         
+	         if (authentication.isAuthenticated()) {
+	             String token = jwtService.generateToken(authRequest.getUsername());
+	             return ResponseEntity.ok(token); // Return token if authentication is successful
+	         } else {
+	             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                     .body(Collections.singletonMap("message", "Invalid credentials!"));
+	         }
+	     } catch (Exception e) {
+	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                 .body(Collections.singletonMap("message", "Invalid credentials!"));
+	     }
+	 }
+
 }
