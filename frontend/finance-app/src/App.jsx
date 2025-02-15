@@ -3,7 +3,7 @@ import Register from "./components/Pages/Register";
 import Login from "./components/Pages/Login";
 import DashboardList from "./components/Pages/DashboardList";
 import Dashboard from "./components/Pages/DashBoard";
-import DashboardPage from "./components/Pages/DashBoardPage";
+import DashboardPage from "./components/Pages/DashboardPage";
 import ProjectDetails from "./components/Pages/ProjectDetails";
 import AddEditProject from "./components/Pages/AddEditProject";
 import EditProject from "./components/Pages/EditProject";
