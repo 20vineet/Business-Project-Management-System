@@ -21,7 +21,7 @@ const pages = [
   {name: "Home", path: "/home"},
   {name: "Projects", path: "/dashboard"},
   {name: "Events", path: "/events"},
-  {name: "Upload", path: "/upload-pdf"},
+  {name: "Upload", path: "/upload-project"},
 ];
 
 // Settings for the user menu
