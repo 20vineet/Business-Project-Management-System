@@ -18,15 +18,6 @@ function EditProject() {
   useEffect(() => {
     // Fetch project data based on id using the apiService function
     const getProjectData = async () => {
-      //   try {
-      //     const project = await fetchProjectById(id); // Fetch project by id
-      //     console.log(project);
-      //     setFormData(project);
-      //     setEvents(project.events);
-      //   } catch (error) {
-      //     console.error("Error fetching project data:", error);
-      //   }
-      // };
       try {
         const token = localStorage.getItem("token");
         // const data = await fetchProjects(); // Fetch projects using apiService

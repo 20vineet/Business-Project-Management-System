@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import {useParams, Link} from "react-router-dom";
-import {fetchProjectById} from "../api/apiService"; // Import the fetchProjectById function
+// Import the fetchProjectById function
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import axios from "axios";
@@ -11,15 +11,6 @@ function ProjectDetails() {
   const {id} = useParams();
 
   useEffect(() => {
-    // const getProjectDetails = async () => {
-    //   try {
-    //     const projectData = await fetchProjectById(id); // Fetch project data using the API service
-    //     setProject(projectData);
-    //     setEvents(projectData.events || []); // Handle events if available
-    //   } catch (error) {
-    //     console.error("Error fetching project details:", error);
-    //   }
-    // };
     const getProjectDetails = async () => {
       try {
         const token = localStorage.getItem("token");

@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {motion} from "framer-motion";
+import {motion, AnimatePresence} from "framer-motion";
+import {CheckCircleIcon} from "@heroicons/react/outline";
 import axios from "axios";
 
 function Register() {
@@ -10,6 +11,8 @@ function Register() {
     password: "",
     roles: "ROLE_ADMIN",
   });
+  const [error, setError] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false); // Success state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,37 +21,30 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the registration data to your backend
-    console.log("Registration data:", formData);
+    setError(""); // Clear previous errors
+
     try {
-      console.log(formData);
-      // const response = await login(formData); // Call API function
-      const response = await axios
-        .post("http://localhost:8080/auth/signup", formData)
-        .then((response) => {
-          const token = response.data;
+      const response = await axios.post("http://localhost:8080/auth/signup", formData);
 
-          // Save token in local storage
-          // localStorage.setItem("token", token);
-          // localStorage.setItem("username", formData.username);
-          // console.log(response);
+      console.log("Registration successful:", response);
 
-          // console.log("Token : " + token);
-        });
+      // Show success popup
+      setShowSuccess(true);
 
-      console.log("Login successful:", response);
-
-      navigate("/login"); // Redirect to home after successful login
+      // Redirect after 2 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate("/login");
+      }, 2000);
     } catch (error) {
-      setError(error.response?.data?.message || "Unokown error occured");
+      console.error("Registration failed:", error.response);
+      setError(error.response?.data?.message || "Unknown error occurred");
     }
-    // For demo purposes, we'll just redirect to the login page
-    // navigate("/login"); // Redirecting after registration
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg rounded-lg w-full sm:w-96">
+      <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg rounded-lg w-full sm:w-96 relative">
         <motion.h3
           className="text-2xl font-bold text-center text-gray-800 mb-8"
           initial={{opacity: 0}}
@@ -58,6 +54,9 @@ function Register() {
           Register for an account
         </motion.h3>
 
+        {/* Display error message if registration fails */}
+        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+
         <form onSubmit={handleSubmit}>
           <motion.div
             className="mt-4"
@@ -65,7 +64,7 @@ function Register() {
             animate={{opacity: 1}}
             transition={{duration: 0.5}}
           >
-            <label className="block text-gray-600" htmlFor="username">
+            <label className="block text-gray-600" htmlFor="name">
               Username
             </label>
             <input
@@ -129,6 +128,22 @@ function Register() {
             </Link>
           </div>
         </form>
+
+        {/* Success Popup */}
+        <AnimatePresence>
+          {showSuccess && (
+            <motion.div
+              initial={{opacity: 0, y: -20}}
+              animate={{opacity: 1, y: 0}}
+              exit={{opacity: 0, y: -20}}
+              transition={{duration: 0.4}}
+              className="fixed top-16 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2"
+            >
+              <CheckCircleIcon className="w-5 h-5" />
+              <span>Registration Successful!</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { CalendarIcon } from "lucide-react";
-import { Link } from "react-router-dom";
-import { fetchEvents } from "../api/apiService";
+import {useState, useEffect} from "react";
+import {CalendarIcon} from "lucide-react";
+import {Link} from "react-router-dom";
+import {fetchEvents} from "../api/apiService";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import axios from "axios";
@@ -17,11 +17,6 @@ function EventsPage() {
     const token = localStorage.getItem("token");
     const getEvents = async () => {
       try {
-        // const fetchedEvents = await fetchEvents(); // Fetch events via API service
-        // console.log("API Response:", fetchedEvents);
-        // setEvents(fetchedEvents);
-        // setLoading(false);
-
         const response = await axios.get(
           "http://localhost:8080/api/projects/upcoming-events",
           {
@@ -40,7 +35,7 @@ function EventsPage() {
       }
     };
 
-    getEvents(); // Fetch events when the component mounts
+    getEvents();
   }, []);
 
   if (loading)
