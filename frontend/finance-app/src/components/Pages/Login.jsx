@@ -127,13 +127,14 @@
 
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {motion} from "framer-motion";
-import {LockClosedIcon} from "@heroicons/react/outline";
+import {motion, AnimatePresence} from "framer-motion";
+import {LockClosedIcon, CheckCircleIcon} from "@heroicons/react/outline";
 import axios from "axios";
 
 function Login() {
   const [formData, setFormData] = useState({username: "", password: ""});
   const [error, setError] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false); // State to control success popup
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -158,7 +159,15 @@ function Login() {
       localStorage.setItem("tokenTimestamp", new Date().getTime());
 
       console.log("Login successful:", response);
-      navigate("/home"); // Redirect to home after login
+
+      // Show success popup
+      setShowSuccess(true);
+
+      // Redirect after 2 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate("/home");
+      }, 2000);
     } catch (error) {
       console.error("Login failed:", error.response);
 
@@ -173,7 +182,7 @@ function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg rounded-lg w-full sm:w-96">
+      <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg rounded-lg w-full sm:w-96 relative">
         <motion.h3
           className="text-2xl font-bold text-center text-gray-800 mb-8"
           initial={{opacity: 0}}
@@ -245,6 +254,22 @@ function Login() {
         <div className="mt-6 flex justify-center items-center">
           <LockClosedIcon className="w-6 h-6 text-gray-600" />
         </div>
+
+        {/* Success Popup */}
+        <AnimatePresence>
+          {showSuccess && (
+            <motion.div
+              initial={{opacity: 0, scale: 0.8}}
+              animate={{opacity: 1, scale: 1}}
+              exit={{opacity: 0, scale: 0.8}}
+              transition={{duration: 0.3}}
+              className="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+            >
+              <CheckCircleIcon className="w-5 h-5" />
+              <span>Login Successful!</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

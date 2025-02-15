@@ -12,6 +12,8 @@ import EventsPage from "./components/Pages/EventsPage";
 import EditEvent from "./components/Pages/EditEvent";
 import Account from "./components/Pages/AccountPage";
 import UploadProject from "./components/Pages/UploadProject";
+import UploadPdf from "./components/Pages/UploadPdf";
+import EditUploadedPdf from "./components/Pages/EditUploadedPdf";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
         <Route path="/edit-event/:id" element={<EditEvent />} />
         <Route path="/account" element={<Account />} />
         <Route path="/upload-project" element={<UploadProject />} />
+        <Route path="/upload-pdf" element={<UploadPdf />} />
+        <Route path="/edit-uploaded-pdf-data" element={<EditUploadedPdf />} />
       </Routes>
     </div>
   );
