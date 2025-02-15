@@ -18,16 +18,13 @@ import com.bfms.service.UserInfoService;
 public class UserInfoController {
 	@Autowired
 	private UserInfoService userInfoService;
-	
+
 	@GetMapping("/{username}")
-    public ResponseEntity<UserInfo> getProjectById(@PathVariable String username) {
-//        return userInfoService.getUserByUsername(username)
-//            .map(ResponseEntity::ok)
-//            .orElse(ResponseEntity.notFound().build());
-        Optional<UserInfo> userInfo = userInfoService.getUserByUsername(username);
-        userInfo.get().setPassword("");
-        return userInfo.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-        
-    }
+	public ResponseEntity<UserInfo> getProjectById(@PathVariable String username) {
+
+		Optional<UserInfo> userInfo = userInfoService.getUserByUsername(username);
+		userInfo.get().setPassword("");
+		return userInfo.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+
+	}
 }

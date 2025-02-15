@@ -31,6 +31,7 @@ import com.bfms.service.JwtServices;
 import com.bfms.service.ProjectService;
 
 import jakarta.validation.Valid;
+
 @RestController
 //@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/auth")
@@ -48,51 +49,32 @@ public class AuthController {
 	public String welcome() {
 		return "Welcome this endpoint is not secure";
 	}
-	
-	 @PostMapping("/signup")
-	    public String addNewUser(@RequestBody UserInfo userInfo) {
-	        return service.addUser(userInfo);
-	    }
 
-//	@PostMapping("/authenticate")
-//	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-//		System.out.println("Username : " + authRequest.getUsername());
-//		System.out.println("Password : " + authRequest.getPassword());
-//		
-//		try {
-//			Authentication authentication = authenticationManager.authenticate(
-//					new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-//			if (authentication.isAuthenticated()) {
-//				return jwtService.generateToken(authRequest.getUsername());
-//			} else {
-//				throw new UsernameNotFoundException("invalid user request !");
-//			}
-//		}catch(Exception e) {
-////			e.printStackTrace();
-//			throw new UsernameNotFoundException("invalid user request !");
-//		}
-//	}
-	 
-	 @PostMapping("/authenticate")
-	 public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-	     System.out.println("Username : " + authRequest.getUsername());
-	     System.out.println("Password : " + authRequest.getPassword());
+	@PostMapping("/signup")
+	public String addNewUser(@RequestBody UserInfo userInfo) {
+		return service.addUser(userInfo);
+	}
 
-	     try {
-	         Authentication authentication = authenticationManager.authenticate(
-	                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-	         
-	         if (authentication.isAuthenticated()) {
-	             String token = jwtService.generateToken(authRequest.getUsername());
-	             return ResponseEntity.ok(token); // Return token if authentication is successful
-	         } else {
-	             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-	                     .body(Collections.singletonMap("message", "Invalid credentials!"));
-	         }
-	     } catch (Exception e) {
-	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-	                 .body(Collections.singletonMap("message", "Invalid credentials!"));
-	     }
-	 }
+	@PostMapping("/authenticate")
+	public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+		System.out.println("Username : " + authRequest.getUsername());
+		System.out.println("Password : " + authRequest.getPassword());
+
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+
+			if (authentication.isAuthenticated()) {
+				String token = jwtService.generateToken(authRequest.getUsername());
+				return ResponseEntity.ok(token); // Return token if authentication is successful
+			} else {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+						.body(Collections.singletonMap("message", "Invalid credentials!"));
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(Collections.singletonMap("message", "Invalid credentials!"));
+		}
+	}
 
 }

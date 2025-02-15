@@ -34,7 +34,7 @@ public class ScheduledEmailNotifier {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledEmailNotifier.class);
 
-  //  @Scheduled(cron = "0 * * * * ?") // Runs every minute
+   // @Scheduled(cron = "0 * * * * ?") // Runs every minute
     @Scheduled(cron = "0 0 9 * * ?") // Runs every day at 09:00 AM
     public void checkAndSendNotifications() {
         System.out.println("Checking and sending event notifications... " + java.time.LocalDateTime.now());
@@ -100,7 +100,7 @@ public class ScheduledEmailNotifier {
                 + "Best regards,\nYour Project Team";
 
         logger.info("📧 Sending email to {} for event: {}", project.getContactEmail(), event.getTitle());
-       //  emailService.sendEmail(project.getContactEmail(), subject, clientBody);
+        // emailService.sendEmail(project.getContactEmail(), subject, clientBody);
 
 
         if (adminEmail == null || adminEmail.trim().isEmpty() || "null".equalsIgnoreCase(adminEmail)) {
@@ -118,6 +118,6 @@ public class ScheduledEmailNotifier {
                     + "Please ensure that everything is in order.\n\n"
                     + "Best regards,\nYour Project Notification System";
 
-           //  emailService.sendEmail(adminEmail, subject, adminBody);
+             emailService.sendEmail(adminEmail, subject, adminBody);
     }
 }
